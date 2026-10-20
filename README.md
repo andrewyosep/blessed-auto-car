@@ -6,7 +6,7 @@ Nama sementara; dapat diganti dari **Admin → Pengaturan website**.
 
 - Kode frontend dan backend telah dibuat.
 - `preview.html` adalah pratinjau desain mandiri dengan data contoh. Buka langsung di browser; pencarian, filter, status, favorit, slideshow, dan detail mobil dapat dicoba. Formulir admin di file ini hanya pratinjau dan tidak menyimpan data.
-- Aplikasi server menyediakan `/admin`, API katalog, upload foto, D1 untuk data, dan R2 untuk foto. Sepuluh pengujian lulus; pengujian API menggunakan SQLite lokal serta pengganti layanan identitas dan R2. Integrasi di hosting dan browser belum diverifikasi.
+- Aplikasi server menyediakan `/admin`, API katalog, upload foto, D1 untuk data, dan R2 untuk foto. Enam belas pengujian lulus; pengujian API menggunakan SQLite lokal serta pengganti layanan identitas dan R2. Integrasi di hosting dan browser belum diverifikasi.
 - Instalasi dependensi gagal karena DNS npm tidak tersedia di lingkungan pengerjaan.
 - Publikasi gagal karena host repository tidak dapat dijangkau. Site belum live.
 - Migrasi database **belum dihasilkan**; jalankan generator sebelum build/publikasi.
@@ -27,6 +27,16 @@ Persyaratan: Node.js 22.13+ dan npm.
 
 Gunakan Sites untuk memublikasikan source ke project yang sudah tercatat dalam `.openai/hosting.json`. Jangan membuat project baru. Sites menyambungkan DB/BUCKET dan menerapkan migrasi saat deployment. Website tetap privat sampai pemilik meminta akses publik.
 
+## Desain dan pencarian katalog
+
+- Arah visual charcoal, putih hangat, dan merah bata; tipografi Manrope dan Barlow Condensed.
+- Sidebar filter di desktop, dialog filter dengan terapkan/batal di HP. Merek/model, harga minimum–maksimum dalam juta, tahun, kilometer, transmisi, bahan bakar, tipe bodi, lokasi, dan status dapat dikombinasikan.
+- Filter aktif dapat dihapus satu per satu dan tersimpan di URL. Favorit disimpan per browser. Tampilan grid/daftar dan pengurutan tersedia di desktop.
+- Foto responsif memakai `srcset`, `sizes`, dimensi tetap, `loading=lazy`, skeleton, dan fallback bila gambar gagal. Foto hero pertama dimuat lebih awal; slide lain dimuat saat dipilih.
+- Entrance menggunakan IntersectionObserver, hover foto, transisi dialog, serta dukungan reduced motion. Slideshow berhenti saat hover, fokus, tab tersembunyi, atau hero keluar viewport.
+- `lib/showroom-view.mjs` dan `lib/showroom-interactions.mjs` dipakai bersama oleh komponen React dan ekspor HTML agar pratinjau dan aplikasi mengikuti perilaku yang sama. Input dinamis di-escape sebelum menjadi HTML.
+- Pengujian filter mencakup gabungan OR/AND, batas rentang, model/lokasi, sorting/favorit, pemulihan URL, serta escaping teks. TypeScript/TSX dan JavaScript ekspor diperiksa sintaksnya. Pemeriksaan visual responsif di browser belum dapat dilakukan.
+
 ## Pengelolaan showroom
 
 - Stok mobil: tambah/edit/hapus; harga, tahun, kilometer, transmisi, bahan bakar, warna, lokasi, status, deskripsi, dan label tambahan.
@@ -39,7 +49,7 @@ Gunakan Sites untuk memublikasikan source ke project yang sudah tercatat dalam `
 
 `npm test` (Node.js 22.15+ untuk pengujian API)
 
-Sepuluh pengujian lulus: akses anonim dan admin, penolakan origin asing, tambah/edit/hapus mobil, penyimpanan pengaturan, penolakan data tidak valid, upload dan pembacaan kembali foto, penolakan upload tidak sah atau berukuran berlebih, normalisasi WhatsApp, serta pembatasan pembacaan body tanpa Content-Length. Bug payload JSON `null` yang sebelumnya menghasilkan HTTP 500 sudah diperbaiki menjadi HTTP 400.
+Enam belas pengujian lulus: akses anonim dan admin, penolakan origin asing, tambah/edit/hapus mobil, penyimpanan pengaturan, penolakan data tidak valid, upload dan pembacaan kembali foto, penolakan upload tidak sah atau berukuran berlebih, normalisasi WhatsApp, serta pembatasan pembacaan body tanpa Content-Length. Bug payload JSON `null` yang sebelumnya menghasilkan HTTP 500 sudah diperbaiki menjadi HTTP 400.
 
 Pengujian menjalankan handler aplikasi dan SQL yang sebenarnya. Layanan platform diganti di `scripts/test-runtime.mjs` hanya selama pengujian: identitas melalui header, database SQLite sementara, dan bucket dalam memori. Hasil ini belum membuktikan migrasi D1, layanan R2 hosted, login browser, atau keseluruhan aplikasi di hosting bekerja.
 

@@ -6,7 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test scripts/check-core.mjs scripts/check-api.mjs",
+    "test": "node --experimental-strip-types --test scripts/check-core.mjs scripts/check-api.mjs scripts/check-filters.mjs",
     "install:ci": "node scripts/install-ci.mjs",
     "dev": "node scripts/run-framework.mjs dev",
     "build": "node scripts/run-framework.mjs build",
