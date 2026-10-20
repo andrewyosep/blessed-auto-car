@@ -71,3 +71,5 @@ Di lingkungan tanpa jaringan, dependensi validasi Zod 3.25.76 untuk pengujian di
 `node --experimental-strip-types scripts/export-preview.mjs`
 
 Menghasilkan ulang `preview.html` dari data contoh dan CSS aplikasi. Script hasil ekspor juga diperiksa sintaksnya. Build framework, migrasi melalui Drizzle, browser QA, dan pengujian end-to-end belum bisa dijalankan karena batasan lingkungan. Server preview lokal ditolak (`Operation not permitted`); DNS npm dan host source Sites juga belum tersedia.
+
+Logo merek pada pemilih katalog dan kartu mobil disertakan sebagai data SVG. Klik merek menyaring stok dan keadaan aktif mengikuti filter. Aset: vehiclespecs/brand-logos (Toyota, BMW, Mercedes-Benz, Mitsubishi), diegojasso/car-logos-SVG (Honda). Logo milik pemilik merek masing-masing, untuk identifikasi kendaraan.
