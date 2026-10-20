@@ -2,7 +2,7 @@ export type Car = {
   id: string; brand: string; name: string; year: number; price: number;
   mileage: number; transmission: string; fuel: string; color: string;
   status: "Tersedia" | "Dipesan" | "Terjual"; location: string;
-  description: string; photos: string[]; highlights: string[]; bodyType?: string; demo?: boolean;
+  description: string; photos: string[]; highlights: string[]; bodyType?: string; demo?: boolean; published?: boolean;
 };
 export type Slide = { title: string; description: string; image: string };
 export type Settings = { name: string; tagline: string; whatsapp: string; address: string; logo: string; slides: Slide[] };

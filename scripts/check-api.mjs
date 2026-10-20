@@ -105,3 +105,23 @@ test('Unauthorized, oversized, and non-image uploads store nothing; missing phot
   assert.equal(bucket.size, 0);
   for (const key of ['../secrets', 'abcdef.png']) assert.equal((await photos.GET(new Request('https://showroom.test/api/photos/' + key), { params: Promise.resolve({ key }) })).status, 404);
 });
+
+test('Draft without photos stays private until published and can be hidden again', async () => {
+  const { readCatalog } = await import('../lib/server.ts');
+  const draft = vehicle({ published: false, photos: [] });
+  assert.equal((await catalog.POST(request({ action: 'save-car', car: draft }))).status, 200);
+  assert.deepEqual((await (await catalog.GET()).json()).cars, []);
+  assert.deepEqual((await readCatalog(true)).cars, [draft]);
+  identity(null);
+  await assert.rejects(() => readCatalog(true), { status: 403 });
+  assert.deepEqual((await readCatalog()).cars, []);
+  identity('visitor@example.com');
+  await assert.rejects(() => readCatalog(true), { status: 403 });
+  identity();
+  assert.equal((await catalog.POST(request({ action: 'save-car', car: { ...draft, published: true } }))).status, 400);
+  const published = vehicle({ published: true });
+  assert.equal((await catalog.POST(request({ action: 'save-car', car: published }))).status, 200);
+  assert.deepEqual((await (await catalog.GET()).json()).cars, [published]);
+  assert.equal((await catalog.POST(request({ action: 'save-car', car: { ...published, published: false } }))).status, 200);
+  assert.deepEqual((await (await catalog.GET()).json()).cars, []);
+});

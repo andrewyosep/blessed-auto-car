@@ -6,7 +6,7 @@ Nama sementara; dapat diganti dari **Admin → Pengaturan website**.
 
 - Kode frontend dan backend telah dibuat.
 - `preview.html` adalah pratinjau desain mandiri dengan data contoh. Buka langsung di browser; pencarian, filter, status, favorit, slideshow, dan detail mobil dapat dicoba. Formulir admin di file ini hanya pratinjau dan tidak menyimpan data.
-- Aplikasi server menyediakan `/admin`, API katalog, upload foto, D1 untuk data, dan R2 untuk foto. Enam belas pengujian lulus; pengujian API menggunakan SQLite lokal serta pengganti layanan identitas dan R2. Integrasi di hosting dan browser belum diverifikasi.
+- Aplikasi server menyediakan `/admin`, API katalog, upload foto, D1 untuk data, dan R2 untuk foto. Tujuh belas pengujian lulus; pengujian API menggunakan SQLite lokal serta pengganti layanan identitas dan R2. Integrasi di hosting dan browser belum diverifikasi.
 - Instalasi dependensi gagal karena DNS npm tidak tersedia di lingkungan pengerjaan.
 - Publikasi gagal karena host repository tidak dapat dijangkau. Site belum live.
 - Migrasi database **belum dihasilkan**; jalankan generator sebelum build/publikasi.
@@ -39,6 +39,19 @@ Gunakan Sites untuk memublikasikan source ke project yang sudah tercatat dalam `
 
 ## Pengelolaan showroom
 
+Buka `/admin` setelah aplikasi di-deploy, lalu masuk memakai akun pemilik yang emailnya terdaftar di `ADMIN_EMAILS`.
+
+1. Klik **Tambah mobil**, isi merek/model, harga, tahun, kilometer, transmisi, bahan bakar, warna, lokasi, dan kondisi.
+2. Biarkan **Publikasi: Draf** untuk menyimpan data sebelum foto siap. Spesifikasi wajib tetap harus lengkap. Draf tidak dikirim oleh API katalog publik maupun halaman beranda.
+3. Upload foto, pilih foto utama dengan tombol panah, lalu ubah publikasi menjadi **Tampilkan ke katalog** dan simpan. Minimal satu foto diperlukan untuk publikasi.
+4. Saat unit dipesan atau terjual, edit status lalu simpan. Pilih Draf untuk menyembunyikan unit tanpa menghapus datanya.
+5. Pengaturan website mengelola nama showroom, kontak WhatsApp, alamat, logo, dan slideshow.
+
+Upload menampilkan progres jumlah foto. Navigasi formulir dikunci selama upload/penyimpanan; foto yang selesai diunggah tetap dipertahankan jika batch berikutnya gagal. Foto yang dilepas dari mobil atau berasal dari draf yang dibatalkan belum dihapus otomatis dari bucket. URL foto tetap dapat diakses oleh orang yang mengetahui URL-nya; jangan unggah dokumen pribadi.
+
+Data publikasi disimpan di JSON kendaraan sehingga perubahan ini tidak memerlukan kolom database baru. Unit lama tanpa field `published` tetap tampil. Pengujian tambahan memverifikasi draf privat, penolakan akses non-admin, penolakan publikasi tanpa foto, publikasi, dan penyembunyian ulang.
+
+
 - Stok mobil: tambah/edit/hapus; harga, tahun, kilometer, transmisi, bahan bakar, warna, lokasi, status, deskripsi, dan label tambahan.
 - Foto: upload beberapa file sekaligus, maksimal 20 foto per mobil; JPG/PNG/WebP, maksimal 10 MB per foto. Foto pertama menjadi thumbnail; urutan dan foto utama dapat diubah.
 - Pengaturan: nama showroom, logo, kalimat pengantar, kontak, alamat, serta 1–5 hero slide.
@@ -49,7 +62,7 @@ Gunakan Sites untuk memublikasikan source ke project yang sudah tercatat dalam `
 
 `npm test` (Node.js 22.15+ untuk pengujian API)
 
-Enam belas pengujian lulus: akses anonim dan admin, penolakan origin asing, tambah/edit/hapus mobil, penyimpanan pengaturan, penolakan data tidak valid, upload dan pembacaan kembali foto, penolakan upload tidak sah atau berukuran berlebih, normalisasi WhatsApp, serta pembatasan pembacaan body tanpa Content-Length. Bug payload JSON `null` yang sebelumnya menghasilkan HTTP 500 sudah diperbaiki menjadi HTTP 400.
+Tujuh belas pengujian lulus: akses anonim dan admin, penolakan origin asing, tambah/edit/hapus mobil, penyimpanan pengaturan, penolakan data tidak valid, upload dan pembacaan kembali foto, penolakan upload tidak sah atau berukuran berlebih, normalisasi WhatsApp, serta pembatasan pembacaan body tanpa Content-Length. Bug payload JSON `null` yang sebelumnya menghasilkan HTTP 500 sudah diperbaiki menjadi HTTP 400.
 
 Pengujian menjalankan handler aplikasi dan SQL yang sebenarnya. Layanan platform diganti di `scripts/test-runtime.mjs` hanya selama pengujian: identitas melalui header, database SQLite sementara, dan bucket dalam memori. Hasil ini belum membuktikan migrasi D1, layanan R2 hosted, login browser, atau keseluruhan aplikasi di hosting bekerja.
 

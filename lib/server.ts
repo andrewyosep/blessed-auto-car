@@ -18,13 +18,14 @@ export async function requireAdmin(request: Request) {
   if (!identity.authorized) throw new HttpError(403, "Akun ini tidak memiliki akses admin.");
   return identity.user;
 }
-export async function readCatalog() {
+export async function readCatalog(includeDrafts = false) {
+  if (includeDrafts && !(await adminIdentity()).authorized) throw new HttpError(403, "Akun ini tidak memiliki akses admin.");
   const db = database();
   const [cars, settings] = await Promise.all([
     db.prepare("SELECT data FROM vehicles ORDER BY updated_at DESC").all<{data: string}>(),
     db.prepare("SELECT data FROM showroom WHERE id = ?").bind("settings").first<{data: string}>(),
   ]);
-  return { cars: cars.results.map(row => JSON.parse(row.data) as Car), settings: settings ? { ...defaultSettings, ...JSON.parse(settings.data) } as Settings : defaultSettings };
+  return { cars: cars.results.map(row => JSON.parse(row.data) as Car).filter(car => includeDrafts || car.published !== false), settings: settings ? { ...defaultSettings, ...JSON.parse(settings.data) } as Settings : defaultSettings };
 }
 export function jsonError(error: unknown) {
   const known = error instanceof HttpError;

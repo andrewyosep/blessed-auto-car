@@ -20,3 +20,5 @@
 .showroom-enhanced .car-card.revealed{animation:copy-enter 500ms var(--ease) var(--reveal-delay,0ms) backwards}.hero-media .photo-frame{aspect-ratio:auto}
 @media(max-width:760px){.search-field input,.admin-panel input,.admin-panel select,.admin-panel textarea{font-size:16px}}
 @media(max-width:760px){.list-view .car-card{display:block}.list-view .car-image{aspect-ratio:1.5;min-height:0}.list-view .car-content{padding:18px 20px 0}}
+
+.vehicle-fields{border:0;margin:0;padding:0;min-width:0}.vehicle-fields progress{width:100%;height:6px;accent-color:var(--accent,#b43b2e)}
