@@ -27,6 +27,8 @@ export const demoCars: Car[] = [
   { ...base, id: "demo-8", brand: "Honda", name: "Brio Satya E", bodyType: "Hatchback", location: "Bekasi", year: 2023, price: 163000000, mileage: 18000, transmission: "Manual", color: "Abu-abu", status: "Tersedia", highlights: ["Hatchback"], photos: [photo("photo-1533473359331-0135ef1b58bf")] },
   { ...base, id: "demo-9", brand: "Mitsubishi", name: "Xpander Ultimate", bodyType: "MPV", location: "Jakarta", year: 2022, price: 245000000, mileage: 41000, status: "Tersedia", highlights: ["MPV"], photos: [photo("photo-1519641471654-76ce0107ad1b")] },
 ];
+// Demonstration gallery only; not photographs of one actual unit.
+for (const car of demoCars) car.photos = [...car.photos, ...["photo-1507136566006-cfc505b114fc","photo-1441148345475-03a2e82f9719","photo-1492144534655-ae79c964c9d7"].map(id => photo(id))];
 export const rupiah = (value: number) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(value);
 export const number = (value: number) => new Intl.NumberFormat("id-ID").format(value);
 export function whatsappUrl(phone: string, message: string) {
